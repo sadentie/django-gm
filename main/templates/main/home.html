@@ -1,0 +1,127 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}GM{% endblock %}
+
+{% block main %}
+{{user}}
+{{q}}
+{{q}}
+{{q}}
+{{ip}}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <p><a href="{% url 'logout' %}">Log Out</a></p>
+{%endif%}
+    <aside>
+        <span class="logo">GOALS MANAGER</span>
+        <div>
+            <button id="btnreg">Регистрация</button>  
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ log }}
+            <button>123</button>
+        </form>
+    </aside>
+    {{post}}
+    <div id="reg" class="hideblock">
+        <form method="post">
+            <p id="regtext">Регистрация <i id="regclose" class="fa-solid fa-xmark"></i></p>
+            {% csrf_token %}
+            <div class="re">
+                <p>Введите имя пользователя</p>
+                {{ create.username }}
+                {{ err1 }}
+                <div id="err1"></div>
+            </div>
+            <div class="re">
+                <p>Введите пароль</p>
+                {{ create.password1 }}
+            </div>
+            <div class="re">
+                <p>Повторите пароль</p>
+                {{ create.password2 }}
+                <!-- {{ err2 }} -->
+                <div id="err2"></div>
+            </div>
+            
+        </form>
+        <button id="regbtn" class="btn btn-success" type="submit">Готово</button>
+    </div>
+    <div class="all">
+        <div class="firstblock">
+            <p class="gtext">Цели</p>
+            <div class="goalform"><form  method="post" style="display: flex">
+                <div class="helpround">
+                    <p id="qv">?</p>
+                    <div class="helptext">
+                        <p>Укажите свою цель и выберите дату к которой хотите ее выполнить(дату указыват не обязательно)</p>
+                    </div>
+                </div>
+                {% csrf_token %}
+                {{ form.goal }}
+                {{ form.dateend }}
+                <button class="btn btn-success"><i class="fa-solid fa-check"></i></button>
+            </form>
+            </div>
+            <div class="allgoals">
+                {% for el, val in goalsandpercents %}
+                <div class="goals">
+                    <div class="prog" id="progressid{{el.id}}">
+                        <div class="progbar" style="width: {{ val.percent }}%">
+                            <div class="goal">
+                                {% if val.daysleft == -1 %}
+                                    <p id="goalid{{el.id}}" class="goaltext">{{ el.goal }}</p><p class="inf">∞</p>
+                                {% else %}
+                                    <p id="goalid{{el.id}}" class="goaltext">{{ el.goal }}</p><p class="daysleft">Дней осталось: {{ val.daysleft }}</p>
+                                {% endif %}
+                                <div id="hideid{{el.id}}" style="display: none">
+                                    <form action="{% url 'update' el.id %}" method="post" style="display: flex">
+                                        {% csrf_token %}
+                                        {{ form.goal }}
+                                        {{ form.dateend }}
+                                        <button type="submit" class="btn btn-success confb"><i class="fa-solid fa-check" title="Готово"></i></button>
+                                    </form>
+                                    <form action="{% url 'delete' el.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success delb"><i class="fa-solid fa-trash" title="Удалить"></i></button>  
+                                    </form>
+                                </div>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <button id="sucid{{el.id}}" type="submit" name="id" value="{{ el.id }}" class="btn btn-success sucb" title="Выполнено"><i class="fa-solid fa-check"></i></button>
+                                </form>
+                                <button  onclick="edit(this.id)" id='id{{ el.id }}' class="btn btn-success editb" ><i class="fa-solid fa-pen" title="Редактировать"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <button id="prov">dsfdsf</button>
+            </div>
+        </div>
+        <div class="secondblock">
+            <p class="gtext">Выполненные цели</p>
+            {% for el in completedgoals %}
+                <div class="comp">
+                    <div class="comgoal">
+                        {% if el.timespend == 0 %}
+                            <p class="comtext0">{{ el }}</p> <p class="sptext0">{{ el.enddate }}</p>
+                            <form action="{% url 'deletecom' el.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success delc"><i class="fa-solid fa-trash"></i></button>  
+                            </form>
+                        {% else %}
+                            <p class="comtext">{{ el }}</p> <p class="sptext">{{ el.enddate }} Выполнено за {{ el.timespend }} дней</p>
+                            <form action="{% url 'deletecom' el.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success delc"><i class="fa-solid fa-trash"></i></button>  
+                            </form>
+                        {% endif %}
+                    </div>                 
+                </div> 
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+{% endblock %}  

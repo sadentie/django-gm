@@ -1,0 +1,17 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+
+{% block main %}
+    <div class="menu">
+        <a href="{% url 'home' %}"><p class="section1 nomain">Главная</p></a>
+        <a href="{% url 'stats' %}"><p class="section2 main">Статистика</p></a>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ create }}
+        <button type="submit"></button>
+    </form>
+    {{err}}
+{% endblock %}
