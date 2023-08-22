@@ -3,27 +3,26 @@
 {% block title %}GM{% endblock %}
 
 {% block main %}
-{{user}}
-{{q}}
-{{q}}
-{{q}}
-{{ip}}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-{%endif%}
+<!-- {{user}}
+{{ip}} -->
     <aside>
         <span class="logo">GOALS MANAGER</span>
-        <div>
-            <button id="btnreg">Регистрация</button>  
-        </div>
-        <form method="post">
-            {% csrf_token %}
-            {{ log }}
-            <button>123</button>
-        </form>
+        <div id="logfield">
+            {% if user.is_authenticated %}
+                {{ user.username }}
+                <p><a class="btn btnreg btnlgo" href="{% url 'logout' %}">Выйти</a></p>
+            {% else  %}
+                <p id="logerr">{{ logerr }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ log.logusername }} <br>
+                    {{ log.logpassword }} <br>
+                    <button class="btn btnreg btnent">Вход</button>
+                </form>
+                <button id="btnreg" class="btn btnreg">Регистрация</button>
+            {% endif %}
+        </div> 
     </aside>
-    {{post}}
     <div id="reg" class="hideblock">
         <form method="post">
             <p id="regtext">Регистрация <i id="regclose" class="fa-solid fa-xmark"></i></p>
@@ -44,26 +43,30 @@
                 <!-- {{ err2 }} -->
                 <div id="err2"></div>
             </div>
-            
         </form>
-        <button id="regbtn" class="btn btn-success" type="submit">Готово</button>
+        <button id="regconf" class="btn btn-success" type="submit">Готово</button>
     </div>
     <div class="all">
         <div class="firstblock">
             <p class="gtext">Цели</p>
-            <div class="goalform"><form  method="post" style="display: flex">
-                <div class="helpround">
-                    <p id="qv">?</p>
-                    <div class="helptext">
-                        <p>Укажите свою цель и выберите дату к которой хотите ее выполнить(дату указыват не обязательно)</p>
+                {% if  user.is_authenticated %}
+                <div class="goalform">
+                    <form  method="post" style="display: flex">
+                    <div class="helpround">
+                        <p id="qv">?</p>
+                        <div class="helptext">
+                            <p>Укажите свою цель и выберите дату к которой хотите ее выполнить(дату указыват не обязательно)</p>
+                        </div>
                     </div>
+                    {% csrf_token %}               
+                    {{ form.goal }}
+                    {{ form.dateend }}
+                    <button class="btn btn-success"><i class="fa-solid fa-check"></i></button>
+                    </form>
                 </div>
-                {% csrf_token %}
-                {{ form.goal }}
-                {{ form.dateend }}
-                <button class="btn btn-success"><i class="fa-solid fa-check"></i></button>
-            </form>
-            </div>
+                {% else %}
+                    <p id="reqtext">Необходима авторизация</p>
+                {% endif %} 
             <div class="allgoals">
                 {% for el, val in goalsandpercents %}
                 <div class="goals">
@@ -97,7 +100,6 @@
                     </div>
                 </div>
                 {% endfor %}
-                <button id="prov">dsfdsf</button>
             </div>
         </div>
         <div class="secondblock">

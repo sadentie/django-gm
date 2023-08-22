@@ -11,11 +11,9 @@ body {
   position: relative;
   /* top: 20px; */
   display: flex;
-  border-top: #198754 2px solid;
 }
 aside {
   display: flex;
-  float: top;
   background: #198754;
   font-weight: 900;
   height: 130px;
@@ -23,6 +21,7 @@ aside {
   color: #0e0e0e;
   border-bottom: 3px solid #0e0e0e;
   white-space: nowrap;
+  outline: #198754 2px solid;
 }
 a:hover, a {
   text-decoration: none;
@@ -89,6 +88,35 @@ aside .logo {
   color: #198754;
   font-size: 20px;
   border: 1px solid #198754;
+}
+.btnreg {
+  position: relative;
+  left: 50px;
+  bottom: 30px;
+  font-size: 14px;
+  color: #0e0e0e;
+  background-color: #198754;
+  border: #0e0e0e 1px solid;
+  width: 95px;
+  height: 30px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 3px;
+}
+.btnreg:hover {
+  background-color: #0e0e0e;
+  color: #198754;
+  border-color: #198754;
+}
+.btnent {
+  position: relative;
+  top: 0px;
+  left: -54px;
+}
+.btnlgo {
+  position: relative;
+  bottom: 2px;
+  left: 0px;
 }
 .editb {
   position: absolute;
@@ -273,7 +301,6 @@ input:focus {
   border-radius: 15px;
 }
 .comgoal {
-  /* margin-top: 5px; */
   margin-left: 5px;
   display: flex;
   cursor: default;
@@ -328,7 +355,7 @@ input:focus {
   font-size: 25px;
   background-color: #198754;
 }
-#regbtn {
+#regconf {
   width: 100px;
   position: relative;
   left: 200px;
@@ -358,6 +385,31 @@ text {
   cursor: default;
 }
 
-
+#id_logusername, #id_logpassword {
+  width: 200px;
+}
+#logfield {
+  position: relative;
+  bottom: 10px;
+  text-align: center;
+  color: #0e0e0e;
+  position: relative;
+  left: 200px;
+  border-top: #198754 5px solid;
+  width: 350px;
+}
+#reqtext {
+  position: relative;
+  font-size: 50px;
+  left: 80%;
+  color: #754547;
+  white-space: nowrap;
+}
+#logerr {
+  position: relative;
+  color: #754547;
+  top: 15px;
+  height: 20px;
+}
 
 

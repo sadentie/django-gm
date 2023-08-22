@@ -9,16 +9,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 
 def home(request):
-    ip = ''
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    err1, err2 = '', ''
+    err1, err2, logerr = '', '', ''
     if request.method == 'POST':
         if 'goal' in request.POST:
             form = Goals(
@@ -39,15 +32,9 @@ def home(request):
                         login(request, user)
                         return redirect('home')
                     else:
-                        disable = 'disable accaunt'
-        # if 'username' in request.POST:
-        #     regform = CreateUserForm(request.POST)
-        #     if regform.is_valid():
-        #         regform.save()
-        #         return redirect('home')
-        #     else:
-        #         err1 = regform.errors.get('username') if regform.errors.get('username') else ''
-        #         err2 = regform.errors.get('password2') if regform.errors.get('password2') else ''
+                        disable = 'Аккаунт отключен'
+                else:
+                    logerr = 'Неверный логин или пароль'
         else:
             g = Goals.objects.get(id=request.POST['id'])
             g.delete()
@@ -96,7 +83,7 @@ def home(request):
         'err2': err2,
         'log': LoginForm,
         'user': request.user,
-        'ip': ip
+        'logerr': logerr
     }
 
     return render(request, 'main/home.html', data)
@@ -120,6 +107,10 @@ def reg(request):
     regform = CreateUserForm(request.GET)
     if regform.is_valid():
         regform.save()
+        user = authenticate(username = request.GET.get('username'), password = request.GET.get('password1'))
+        if user is not None:
+            if user.is_active:
+                login(request, user)
     data = {'reg': regform.errors}
     return JsonResponse(data)
 

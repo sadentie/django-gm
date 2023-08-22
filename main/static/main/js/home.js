@@ -16,6 +16,10 @@ function edit(buttonId) {
     }
 
 };
+try {
+  document.getElementById('id_logusername').placeholder = 'Имя пользователя'
+  document.getElementById('id_logpassword').placeholder = 'Пароль'
+} catch {}
 
 // изменение цвета шкалы прогресса в зависимости от того на сколько она заполнена
 progressbars = document.getElementsByClassName('progbar')
@@ -38,6 +42,7 @@ while (progressindex<progressbars.length) {
 }
 
 // заполнение инпута редактируемой цели текущей целью
+try {
 goals = document.querySelectorAll('.goaltext')
 inp = document.getElementsByName('goal')
 inp[0].placeholder = 'Твоя цель'
@@ -47,30 +52,33 @@ while (i<inp.length) {
   inp[i].value = goal
   i++
 };
+} catch{}
 
 
-
+// закрытие/открытие окна регистрации
 document.getElementById('btnreg').onclick = function(){
-  document.getElementById('reg').classList.contains('hideblock') ? document.getElementById('reg').classList.remove('hideblock') : document.getElementById('reg').classList.add('hideblock')}
-
+  document.getElementById('reg').classList.contains('hideblock') ? document.getElementById('reg').classList.remove('hideblock') : document.getElementById('reg').classList.add('hideblock')
+}
 document.getElementById('regclose').onclick = function() {document.getElementById('reg').classList.add('hideblock')}
 document.addEventListener('keyup', function(e) { if(e.code == 'Escape'){document.getElementById('reg').classList.add('hideblock')}} )
-document.getElementById('id_username').oninput = function(){
-  $.ajax({
-    url: 'validate',
-    // data: {'username': document.getElementById('id_username').value},
-    data: {'username': $('#id_username').val()},
-    dataType: 'json',
-    success: function(data){
-      if (data.is_taken){ document.getElementById('message').innerHTML = 'taken'}
-      else { document.getElementById('message').innerHTML = ''}
 
-    }
-  })
-}
+// здесь планировался вывод ошибок в реальном времени, но справился и без этого
+// document.getElementById('id_username').oninput = function(){
+//   $.ajax({
+//     url: 'validate',
+//     // data: {'username': document.getElementById('id_username').value},
+//     data: {'username': $('#id_username').val()},
+//     dataType: 'json',
+//     success: function(data){
+//       if (data.is_taken){ document.getElementById('message').innerHTML = 'taken'}
+//       else { document.getElementById('message').innerHTML = ''}
 
+//     }
+//   })
+// }
 
-document.getElementById('regbtn').onclick = function(){
+// окно регистрации
+document.getElementById('regconf').onclick = function(){
   $.ajax({
     url:'reg',
     data: {
