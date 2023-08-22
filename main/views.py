@@ -119,7 +119,8 @@ def userlogout(request):
     logout(request)
     return redirect('home')
 
-def validate(request):
-    username = request.GET.get('username', None)
-    data = {'is_taken': User.objects.filter(username__iexact=username).exists()}
-    return JsonResponse(data)
+# это не надо но пускай останется для меня пока что
+# def validate(request):
+#     username = request.GET.get('username', None)
+#     data = {'is_taken': User.objects.filter(username__iexact=username).exists()}
+#     return JsonResponse(data)
